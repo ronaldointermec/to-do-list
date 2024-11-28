@@ -1,4 +1,4 @@
-.wrappwer {
+.content {
   max-width: 46rem;
   width: 100%;
   margin: 0 auto;
@@ -12,12 +12,20 @@
 
 }
 
-
-
-
-
 .container input,
 button {
   transform: translateY(-50%);
   margin-bottom: 2.313rem;
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tasksList > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
