@@ -5,13 +5,19 @@ import { Header } from './components/Header'
 import { Input } from './components/Input'
 import { Button } from './components/Button'
 import { ToDoHeader } from './components/ToDoHeader';
-import { Vazio } from './components/vazio'
+import { Vazio } from './components/Vazio';
 import { Task } from './components/Task'
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+export interface ITodo {
+  id: string;
+  title: string;
+  isDone: boolean;
+}
 
-const ToDoList = [
+/*
+const ToDoList: ITodo[] = [
   {
     id: uuidv4(),
     title: 'Concluir o desafio',
@@ -29,15 +35,16 @@ const ToDoList = [
   },
   {
     id: uuidv4(),
-    title: 'Bucar filho na escola',
+    title: 'Buscar filho na escola',
     isDone: true,
   }
 ];
+*/
 
 
 
 function App() {
-  const [toDos, setTodos] = useState(ToDoList);
+  const [toDos, setTodos] = useState<ITodo[]>([]);
 
   const [inputValue, setInputValue] = useState('');
 
@@ -48,12 +55,18 @@ function App() {
     }
 
 
+    const newValue: ITodo = {
+      id: uuidv4(),
+      title: inputValue,
+      isDone: false,
+    }
 
+    setTodos((state) => [...state, newValue])
     setInputValue((value) => {
       return value = ''
     });
 
-    console.log('handle click');
+
   }
 
   function handleInputValue(e: React.ChangeEvent<HTMLInputElement>) {
@@ -62,6 +75,45 @@ function App() {
       return value = e.target.value
     });
     console.log(e.target.value)
+  }
+
+  function handleStatus({ id }: { id: string }) {
+
+    const updatedToDoList = toDos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, isDone: !todo.isDone };
+      }
+      return todo;
+    });
+
+    /*
+        const index = toDos.findIndex((todo) => todo.id === id);
+        if (index !== -1) {
+          ToDoList[index].isDone = !ToDoList[index].isDone;
+        }
+        const updatedToDoList = [...ToDoList];
+    
+    */
+
+    setTodos(updatedToDoList);
+
+
+  }
+  function handleDelete({ id }: { id: string }) {
+    //const updatedToDoList = toDos.filter(todo => todo.id !== id)
+
+
+    const index = toDos.findIndex((todo) => todo.id === id);
+    if (index !== -1) {
+      toDos.splice(index, 1);
+    }
+    const updatedToDoList = [...toDos];
+    if(!confirm('Are you sure?')){
+      return;
+    }
+  
+
+    setTodos(updatedToDoList);
   }
 
   return (
@@ -84,8 +136,10 @@ function App() {
               {
                 toDos.map((todo) => (
                   <Task
-                   key={todo.id}
-                   data={toDos}
+                    key={todo.id}
+                    data={todo}
+                    handleStatus={handleStatus}
+                    handleDelete={handleDelete}
                   />
                 )
                 )
