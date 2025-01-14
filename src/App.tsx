@@ -44,6 +44,11 @@ const ToDoList: ITodo[] = [
 
 
 function App() {
+
+ ['item1', 'item2', 'item3'].map;
+
+
+
   const [toDos, setTodos] = useState<ITodo[]>([]);
 
   const [inputValue, setInputValue] = useState('');

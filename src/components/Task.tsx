@@ -25,6 +25,7 @@ export function Task({ data, handleStatus, handleDelete }: TasKProps) {
     const paragraphCheckedClassname = data.isDone
         ? styles['paragraph-checked']
         : ''
+
     return (
         <div className={styles.container}>
 
